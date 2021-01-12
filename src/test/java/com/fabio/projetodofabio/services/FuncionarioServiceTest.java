@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class FuncionarioServiceTest {
+class FuncionarioServiceTest {
 
     @MockBean
     private FuncionarioRepository funcionarioRepository;
@@ -25,7 +25,7 @@ public class FuncionarioServiceTest {
     private FuncionarioService funcionarioService;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         BDDMockito.given(this.funcionarioRepository.save(Mockito.any(Funcionario.class))).willReturn(new Funcionario());
         BDDMockito.given(this.funcionarioRepository.findById(Mockito.anyLong())).willReturn(Optional.of(new Funcionario()));
         BDDMockito.given(this.funcionarioRepository.findByEmail(Mockito.anyString())).willReturn(new Funcionario());
@@ -33,28 +33,28 @@ public class FuncionarioServiceTest {
     }
 
     @Test
-    public void testPersistirFuncionario() {
+    void testPersistirFuncionario() {
         Funcionario funcionario = this.funcionarioService.persist(new Funcionario());
 
         Assertions.assertNotNull(funcionario);
     }
 
     @Test
-    public void testBuscarFuncionarioPorId() {
+    void testBuscarFuncionarioPorId() {
         Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(1L);
 
         Assertions.assertTrue(funcionario.isPresent());
     }
 
     @Test
-    public void testBuscarFuncionarioPorEmail() {
+    void testBuscarFuncionarioPorEmail() {
         Optional<Funcionario> funcionario = this.funcionarioService.buscarPorEmail("email@email.com");
 
         Assertions.assertTrue(funcionario.isPresent());
     }
 
     @Test
-    public void testBuscarFuncionarioPorCpf() {
+    void testBuscarFuncionarioPorCpf() {
         Optional<Funcionario> funcionario = this.funcionarioService.buscarPorCpf("24291173474");
 
         Assertions.assertTrue(funcionario.isPresent());

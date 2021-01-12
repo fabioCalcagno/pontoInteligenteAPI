@@ -24,7 +24,7 @@ public class Funcionario implements Serializable {
     private static final long serialVersionUID = -5754246207015712518L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
@@ -52,6 +52,16 @@ public class Funcionario implements Serializable {
         return Optional.ofNullable(qtdHorasTrabalhoDia);
     }
 
+    @Transient
+    public Optional<Float> getQtdHorasAlmocoOpt() {
+        return Optional.ofNullable(qtdHorasAlmoco);
+    }
+
+    @Transient
+    public Optional<BigDecimal> getValorHoraOpt() {
+        return Optional.ofNullable(valorHora);
+    }
+
     @PreUpdate
     public void preUpdate() {
         dataAtualizacao = new Date();
@@ -63,7 +73,6 @@ public class Funcionario implements Serializable {
         dataCriacao = atual;
         dataAtualizacao = atual;
     }
-
 
 
 }
