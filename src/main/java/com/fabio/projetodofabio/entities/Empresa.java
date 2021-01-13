@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name= "empresa")
+@Table(name = "empresa")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,14 +21,15 @@ public class Empresa implements Serializable {
     private static final long serialVersionUID = 3960436649365666213L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "razao_social", nullable = false)
     private String razaoSocial;
 
-    @Column(name = "cnpj", nullable = false)
+    @Column
+    @NotNull
     private String cnpj;
 
     @Column(name = "data_criacao", nullable = false)
