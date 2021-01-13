@@ -38,6 +38,7 @@ public class Funcionario implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private PerfilEnum perfil;
+    
     private Date dataCriacao;
     private Date dataAtualizacao;
 

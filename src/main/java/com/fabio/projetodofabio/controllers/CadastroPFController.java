@@ -78,7 +78,7 @@ public class CadastroPFController {
                 .ifPresent(func -> bindingResult.addError(new ObjectError("funcionario", "CPF já existente.")));
 
         this.funcionarioService.buscarPorEmail(cadastroPFDto.getEmail())
-                .ifPresent(func -> bindingResult.addError(new ObjectError("funcionario", "Email já existente.")));
+                .ifPresent(func -> bindingResult.addError(new ObjectError("funcionario", "E-mail já existente.")));
     }
 
     /**
@@ -118,11 +118,12 @@ public class CadastroPFController {
         cadastroPFDto.setEmail(funcionario.getEmail());
         cadastroPFDto.setCpf(funcionario.getCpf());
         cadastroPFDto.setCnpj(funcionario.getEmpresa().getCnpj());
-        cadastroPFDto.getQtdHorasAlmoco()
-                .ifPresent(qtdHorasAlmoco -> funcionario.setQtdHorasAlmoco(Float.valueOf(qtdHorasAlmoco)));
-        cadastroPFDto.getQtdHorasTrabalhoDia()
-                .ifPresent(qtdHorasTrabDia -> funcionario.setQtdHorasTrabalhoDia(Float.valueOf(qtdHorasTrabDia)));
-        cadastroPFDto.getValorHora().ifPresent(valorHora -> funcionario.setValorHora(new BigDecimal(valorHora)));
+        funcionario.getQtdHorasAlmocoOpt().ifPresent(qtdHorasAlmoco ->
+                cadastroPFDto.setQtdHorasAlmoco(Optional.of(qtdHorasAlmoco.toString())));
+        funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(qtdHorasTrabDia ->
+                cadastroPFDto.setQtdHorasTrabalhoDia(Optional.of(qtdHorasTrabDia.toString())));
+        funcionario.getValorHoraOpt().ifPresent(valorHora ->
+                cadastroPFDto.setValorHora(Optional.of(valorHora.toString())));
 
         return cadastroPFDto;
     }
