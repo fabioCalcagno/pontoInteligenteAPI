@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,16 +39,15 @@ public class CadastroPFController {
     private FuncionarioService funcionarioService;
 
     @PostMapping
-    public ResponseEntity<Response<CadastroPFDto>> cadastrar(@Valid @RequestBody CadastroPFDto cadastroPFDto, BindingResult bindingResult) throws NoSuchAlgorithmException {
-        log.info("Cadastrando PF: {}", cadastroPFDto.toString());
-        Response<CadastroPFDto> response = new Response<CadastroPFDto>();
+    public ResponseEntity<Response<CadastroPFDto>> cadastrar(@Valid @RequestBody CadastroPFDto cadastroPFDto) throws NoSuchAlgorithmException {
+        log.info("Cadastrando PF: {}", cadastroPFDto);
+        Response<CadastroPFDto> response = new Response<>();
 
-        validarDadosExistentes(cadastroPFDto, bindingResult);
-        Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPFDto, bindingResult);
+        validarDadosExistentes(cadastroPFDto, response);
+        Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPFDto);
 
-        if (bindingResult.hasErrors()) {
-            log.error("Erro validando dados de cadastro PF: {}", bindingResult.getAllErrors());
-            bindingResult.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+        if (!response.getErrors().isEmpty()) {
+            log.error("Erro validando dados de cadastro PF: {}", response.getErrors());
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -69,16 +67,15 @@ public class CadastroPFController {
      * @param cadastroPFDto
      * @return
      */
-    private void validarDadosExistentes(CadastroPFDto cadastroPFDto, BindingResult bindingResult) {
-        Optional<Empresa> empresa = this.empresaService.buscarPorCnpj(cadastroPFDto.getCnpj());
-        if (!empresa.isPresent()) {
-            bindingResult.addError(new ObjectError("empresa", "Empresa não cadastrada."));
+    private void validarDadosExistentes(CadastroPFDto cadastroPFDto, Response<CadastroPFDto> response) {
+        if (!this.empresaService.buscarPorCnpj(cadastroPFDto.getCnpj()).isPresent()) {
+            response.getErrors().add(new ObjectError("empresa", "Empresa não cadastrada.").getDefaultMessage());
         }
         this.funcionarioService.buscarPorCpf(cadastroPFDto.getCpf())
-                .ifPresent(func -> bindingResult.addError(new ObjectError("funcionario", "CPF já existente.")));
+                .ifPresent(func -> response.getErrors().add(new ObjectError("funcionario", "CPF já existente.").getDefaultMessage()));
 
         this.funcionarioService.buscarPorEmail(cadastroPFDto.getEmail())
-                .ifPresent(func -> bindingResult.addError(new ObjectError("funcionario", "E-mail já existente.")));
+                .ifPresent(func -> response.getErrors().add(new ObjectError("funcionario", "E-mail já existente.").getDefaultMessage()));
     }
 
     /**
@@ -88,8 +85,7 @@ public class CadastroPFController {
      * @return Funcionario
      * @throws NoSuchAlgorithmException
      */
-    private Funcionario converterDtoParaFuncionario(CadastroPFDto cadastroPFDto, BindingResult bindingResult)
-            throws NoSuchAlgorithmException {
+    private Funcionario converterDtoParaFuncionario(CadastroPFDto cadastroPFDto) {
         Funcionario funcionario = new Funcionario();
         funcionario.setNome(cadastroPFDto.getNome());
         funcionario.setEmail(cadastroPFDto.getEmail());

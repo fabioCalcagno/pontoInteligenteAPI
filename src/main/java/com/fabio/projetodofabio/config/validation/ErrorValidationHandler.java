@@ -1,5 +1,6 @@
 package com.fabio.projetodofabio.config.validation;
 
+import com.fabio.projetodofabio.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -12,12 +13,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ErrorValidationHandler {
 
     @Autowired
     private MessageSource messageSource;
+    private FuncionarioService funcionarioService;
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -31,4 +34,12 @@ public class ErrorValidationHandler {
         });
         return dtoList;
     }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchElementException.class)
+    public String handleNoSuchElementException(NoSuchElementException noSuchElementException) {
+        return noSuchElementException.getLocalizedMessage();
+    }
+
+
 }
