@@ -24,7 +24,7 @@ import java.util.Optional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class EmpresaControllerTest {
+class EmpresaControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -39,7 +39,7 @@ public class EmpresaControllerTest {
 
     @Test
     @WithMockUser
-    public void testBuscarEmpresaCnpjInvalido() throws Exception {
+    void testBuscarEmpresaCnpjInvalido() throws Exception {
         BDDMockito.given(this.empresaService.buscarPorCnpj(Mockito.anyString())).willReturn(Optional.empty());
 
         mvc.perform(MockMvcRequestBuilders.get(BUSCAR_EMPRESA_CNPJ_URL + CNPJ).accept(MediaType.APPLICATION_JSON))
@@ -50,7 +50,7 @@ public class EmpresaControllerTest {
 
     @Test
     @WithMockUser
-    public void testBuscarEmpresaCnpjValido() throws Exception {
+    void testBuscarEmpresaCnpjValido() throws Exception {
         BDDMockito.given(this.empresaService.buscarPorCnpj(Mockito.anyString()))
                 .willReturn(Optional.of(this.obterDadosEmpresa()));
 
