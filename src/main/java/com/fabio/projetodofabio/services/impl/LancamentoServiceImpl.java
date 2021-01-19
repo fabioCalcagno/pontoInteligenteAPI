@@ -6,9 +6,13 @@ import com.fabio.projetodofabio.services.LancamentoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -27,12 +31,15 @@ public class LancamentoServiceImpl implements LancamentoService {
     }
 
     @Override
+    @Cacheable("lancamentoPorId")
     public Optional<Lancamento> buscarPorId(Long id) {
         log.info("Buscando um lançamento pelo id {}", id);
         return this.lancamentoRepository.findById(id);
     }
 
     @Override
+    @CachePut("lancamentoPorId")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Lancamento persist(Lancamento lancamento) {
         log.info("Persistindo um Lançamento na base de dados  {}", lancamento);
         return this.lancamentoRepository.save(lancamento);
