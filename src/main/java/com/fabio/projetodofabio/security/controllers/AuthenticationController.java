@@ -55,7 +55,7 @@ public class AuthenticationController {
         Response<TokenDto> response = new Response<TokenDto>();
 
         if (result.hasErrors()) {
-            log.error("Erro validando token: {}", result.getAllErrors());
+            log.error("Erro validando lançamento: {}", result.getAllErrors());
             result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
             return ResponseEntity.badRequest().body(response);
         }
