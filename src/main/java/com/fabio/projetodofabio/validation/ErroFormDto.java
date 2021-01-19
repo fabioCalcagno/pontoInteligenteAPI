@@ -1,4 +1,4 @@
-package com.fabio.projetodofabio.config.validation;
+package com.fabio.projetodofabio.validation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

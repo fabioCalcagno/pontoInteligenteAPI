@@ -1,4 +1,4 @@
-package com.fabio.projetodofabio.config.validation;
+package com.fabio.projetodofabio.validation;
 
 import com.fabio.projetodofabio.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +40,6 @@ public class ErrorValidationHandler {
     public String handleNoSuchElementException(NoSuchElementException noSuchElementException) {
         return noSuchElementException.getLocalizedMessage();
     }
-    
+
 
 }
