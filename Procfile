@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/projeto-do-fabio-0.0.1-SNAPSHOT.jar com.fabio.projetodofabio
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/projeto-do-fabio-0.0.1-SNAPSHOT.jar
