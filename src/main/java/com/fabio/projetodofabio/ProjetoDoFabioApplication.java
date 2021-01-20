@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
 
-@EnableCaching
 @SpringBootApplication
+@EnableCaching
 public class ProjetoDoFabioApplication {
 
     public static void main(String[] args) {
