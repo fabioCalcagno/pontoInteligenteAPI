@@ -31,6 +31,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/lancamentos")
 @NoArgsConstructor
+@CrossOrigin(origins = "*")
 public class LancamentoController {
 
     private static final Logger log = LoggerFactory.getLogger(LancamentoController.class);
